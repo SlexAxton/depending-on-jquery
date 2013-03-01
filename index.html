@@ -39,12 +39,53 @@ document.write( '<link rel="stylesheet" href="css/print/' + ( window.location.se
 }
 .reveal pre {
   font-size: 1em;
-  width: 100%;
+  width: 110%;
+  margin-left: -5%;
   padding: 10px;
   background-color: rgba(0,0,0, 0.1);
 }
+blink {
+  opacity: 0.6;
+  display: inline-block;
+  -webkit-animation: blink 1.5s linear 0s infinite;
+  -moz-animation: blink 1.52s linear 0s infinite;
+  -ms-animation: blink 1.52s linear 0s infinite;
+  -o-animation: blink 1.52s linear 0s infinite;
+}
+@-webkit-keyframes blink {
+  0%   { background: rgba(0, 168, 0, 0.7) }
+  47%  { background: rgba(0, 150, 0, 0.7) }
+  50%  { background: transparent }
+  97%  { background: transparent }
+  100% { background: rgba(0, 150, 0, 0.7) }
+}
+
+@-moz-keyframes blink {
+  0%   { background: rgba(0, 168, 0, 0.7) }
+  47%  { background: rgba(0, 150, 0, 0.7) }
+  50%  { background: transparent }
+  97%  { background: transparent }
+  100% { background: rgba(0, 150, 0, 0.7) }
+}
+
+@-ms-keyframes blink {
+  0%   { background: rgba(0, 168, 0, 0.7) }
+  47%  { background: rgba(0, 150, 0, 0.7) }
+  50%  { background: transparent }
+  97%  { background: transparent }
+  100% { background: rgba(0, 150, 0, 0.7) }
+}
+
+@-o-keyframes blink {
+  0%   { background: rgba(0, 168, 0, 0.7) }
+  47%  { background: rgba(0, 150, 0, 0.7) }
+  50%  { background: transparent }
+  97%  { background: transparent }
+  100% { background: rgba(0, 150, 0, 0.7) }
+}
 .reveal pre code {
   padding: 10px;
+  /*-webkit-filter: invert(100%); BACK POCKET */
 }
 section[t] h1 {
   font-size: 2.75em;
@@ -119,7 +160,28 @@ Depending __on__ jQuery
   <head>
     <script src="js/jquery.js"><᠎/script>
   </head>
-...
+```
+
+</script>
+</section>
+
+<section class="computerguy" data-markdown t>
+<script type="text/template">
+> Fresh. Some plugins now.
+</script>
+</section>
+
+<section class="computerguy" data-markdown t>
+<script type="text/template">
+
+```html
+<!doctype html9>
+<body>
+  <head>
+    <script src="js/jquery.js"><᠎/script>
+    <script src="js/a.js"><᠎/script>
+    <script src="js/jquery.select2.js"><᠎/script>
+    <script src="js/jq.cycle-min.js"><᠎/script>
 ```
 
 </script>
@@ -295,7 +357,15 @@ Reveal.initialize({
     { src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
     { src: 'plugin/markdown/showdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
     { src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
-    { src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+    { src: 'plugin/highlight/highlight.js', async: true, callback: function() {
+      hljs.initHighlightingOnLoad();
+      var codes = document.querySelectorAll('code');
+      [].forEach.call(codes, function (code) {
+        var blink = document.createElement('blink');
+        blink.innerHTML = " ";
+        code.appendChild(blink);
+      });
+    } },
     { src: 'plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
     { src: 'plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }
     //,{ src: 'plugin/remotes/remotes.js', async: true, condition: function() { return !!document.body.classList; } }
