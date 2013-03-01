@@ -25,6 +25,8 @@
 document.write( '<link rel="stylesheet" href="css/print/' + ( window.location.search.match( /print-pdf/gi ) ? 'pdf' : 'paper' ) + '.css" type="text/css" media="print">' );
 </script>
 
+<script src="lib/js/spin.min.js"></script>
+
 <!--[if lt IE 9]>
                 <script src="lib/js/html5shiv.js"></script>
                 <![endif]-->
@@ -85,15 +87,34 @@ blink {
 }
 .reveal pre code {
   padding: 10px;
+  max-height: 500px;
   /*-webkit-filter: invert(100%); BACK POCKET */
 }
 section[t] h1 {
   font-size: 2.75em;
   margin-bottom: 1em;
 }
+section[t] h2 {
+  letter-spacing: -2px;
+}
 section[t] blockquote {
   border: 4px solid #CDC9C3;
   border-radius: 10px;
+  background-color: #EFEFEF;
+  padding: 20px;
+}
+#spinner1,
+#spinner2 {
+  display: block;
+  width: 50px;
+  height: 50px;
+  margin: 10px auto;
+  padding-left: 110px;
+}
+.reveal em {
+  color: #BADA55;
+  font-style: normal;
+  text-shadow: 1px 1px 0 #FFFFFF, 3px 3px 0 #000000;
 }
 </style>
 </head>
@@ -186,6 +207,268 @@ Depending __on__ jQuery
 
 </script>
 </section>
+
+<section class="computerguy" data-markdown t>
+<script type="text/template">
+\***cracks nuckles**\*
+> alright, time for my app
+</script>
+
+<aside class="notes">
+  You can tell that this is fake because he hasn't browsed reddit yet.
+</aside>
+</section>
+
+<section class="computerguy" data-markdown t>
+<script type="text/template">
+
+```html
+<!doctype html9>
+<body>
+  <head>
+    <script src="js/jquery.js"><᠎/script>
+    <script src="js/a.js"><᠎/script>
+    <script src="js/jquery.select2.js"><᠎/script>
+    <script src="js/jq.cycle-min.js"><᠎/script>
+    <script src="js/app/core.js"><᠎/script>
+    <script src="js/app/utils.js"><᠎/script>
+    <script src="js/app/app.js"><᠎/script>
+    <script src="js/app/funcsAndVars.js"><᠎/script>
+```
+
+</script>
+</section>
+
+<section class="computerguy" data-markdown t>
+<script type="text/template">
+\***cmd+shift+r**\*
+</script>
+</section>
+
+<section class="computerguy" t>
+  <div id="spinner1"></div>
+  <script>
+  (function(){
+  var spinner = new Spinner().spin();
+  document.getElementById('spinner1').appendChild(spinner.el);
+  })();
+  </script>
+</section>
+
+<section class="computerguy" t>
+  <div id="spinner2"></div>
+  <script>
+  (function(){
+  var spinner = new Spinner().spin();
+  document.getElementById('spinner2').appendChild(spinner.el);
+  })();
+  </script>
+</section>
+
+<section class="computerguy" data-markdown t>
+<script type="text/template">
+# : /
+</script>
+</section>
+
+<section>
+  <section data-markdown t>
+  <script type="text/template">
+  # *Mind Perf*
+  </script>
+  <aside class="notes">
+    Let's optimize for the way we think
+  </aside>
+  </section>
+
+  <section data-markdown t>
+  <script type="text/template">
+  ## Manual dependency
+  ## management stinks
+  </script>
+
+  <aside class="notes">
+    We're not good at holding all of our depdendencies in our brains. And we're not good at remembering when something needs to be removed.
+  </aside>
+  </section>
+
+  <section data-markdown t>
+  <script type="text/template">
+  ## A **10kloc** `app.js` file
+  ## is not a badge of honor
+  </script>
+  </section>
+
+  <section data-markdown t>
+  <script type="text/template">
+  ## You are sacrificing *mental*
+  ## and *network* performance by
+  ## building apps the
+  ## "good 'ol way"
+  </script>
+  </section>
+
+
+  <section data-markdown t>
+  <script type="text/template">
+    # The `<script>` tag is dead
+  </script>
+  <aside class="notes">
+    You can have *one*.
+  </aside>
+  </section>
+
+  <section data-markdown t>
+  <script type="text/template">
+  # Long live *modules*
+  </script>
+  </section>
+
+</section>
+
+<section>
+  <section data-markdown t>
+  <script type="text/template">
+  # I created *yepnope.js*
+  </script>
+  </section>
+
+  <section data-markdown t>
+  <script type="text/template">
+  # Don't ever use it.
+  </script>
+  </section>
+</section>
+
+<section data-markdown t>
+<script type="text/template">
+## Most non-trivial applications
+## will benefit from *internal*
+## modularization.
+</script>
+<aside class="notes">
+So not only are you using 3rd party code as modules. You're writing your app in that same modular fashion.
+</aside>
+</section>
+
+<section>
+  <section data-markdown t>
+  <script type="text/template">
+  # *AMD*
+  </script>
+  </section>
+
+  <section data-markdown t>
+  <script type="text/template">
+  ## One flavor of *module*
+  </script>
+  </section>
+
+  <section data-markdown t>
+<script type="text/template">
+# Boilerplate
+
+```javascript
+define('child', ['mom', 'dad'],
+  function( mom, dad ) {
+    return mom + dad;
+  }
+);
+```
+
+</script>
+  </section>
+
+    <section data-markdown t>
+<script type="text/template">
+# Boilerplate
+
+```javascript
+// A global 'define' function
+define('child', ['mom', 'dad'],
+  function( mom, dad ) {
+    return mom + dad;
+  }
+);
+```
+
+</script>
+  </section>
+
+    <section data-markdown t>
+<script type="text/template">
+# Boilerplate
+
+```javascript
+//     A Name!
+define('child', ['mom', 'dad'],
+  function( mom, dad ) {
+    return mom + dad;
+  }
+);
+```
+
+</script>
+  </section>
+
+  <section data-markdown t>
+<script type="text/template">
+# Boilerplate
+
+```javascript
+//              Dependencies
+define('child', ['mom', 'dad'],
+  function( mom, dad ) {
+    return mom + dad;
+  }
+);
+```
+
+</script>
+  </section>
+
+  <section data-markdown t>
+<script type="text/template">
+# Boilerplate
+
+```javascript
+define('child', ['mom', 'dad'],
+  // A function that receives
+  // the dependencies and returns
+  // the module
+  function( mom, dad ) {
+    return mom + dad;
+  }
+);
+```
+
+</script>
+  </section>
+
+</section>
+
+<section data-markdown t>
+<script type="text/template">
+## What's this got to
+# do with *jQuery*?
+</script>
+</section>
+
+<section data-markdown t>
+<script type="text/template">
+## Line ~*9260* of *jQuery.js*
+
+```javascript
+if ( typeof define === "function" &&
+     define.amd && define.amd.jQuery ) {
+  define( "jquery", [], function () {
+    return jQuery;
+  });
+}
+```
+</script>
+</section>
+
 
 <!-------END NORMAL SLIDES ----------->
 
