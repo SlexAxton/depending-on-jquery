@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8">
 
-<title>reveal.js - The HTML Presentation Framework</title>
+<title>Depending on jQuery - A Module Love Story</title>
 
 <meta name="description" content="A framework for easily creating beautiful presentations using HTML">
 <meta name="author" content="Hakim El Hattab">
@@ -87,7 +87,7 @@ blink {
 }
 .reveal pre code {
   padding: 10px;
-  max-height: 500px;
+  max-height: 700px;
   /*-webkit-filter: invert(100%); BACK POCKET */
 }
 section[t] h1 {
@@ -469,7 +469,606 @@ if ( typeof define === "function" &&
 </script>
 </section>
 
+<section data-markdown t>
+<script type="text/template">
+## `myapp.js`
 
+```javascript
+define('myapp', ['jquery'], function ($) {
+  $(document).ready(function(){
+    alert('yay');
+  });
+});
+```
+</script>
+</section>
+
+<section>
+<section data-markdown t>
+<script type="text/template">
+# From the top
+
+```sh
+App
+  - js
+    - jquery.js
+    - myapp.js
+    - require.js
+  - index.html
+```
+</script>
+</section>
+
+<section data-markdown t>
+<script type="text/template">
+# From the top
+
+```html
+<script src="js/require.js" data-main="js/myapp">
+<᠎/script>
+```
+
+</script>
+</section>
+
+<section data-markdown t>
+<script type="text/template">
+# From the top
+
+```javascript
+define('myapp', ['jquery'], function ($) {
+  $(document).ready(function(){
+    alert('yay');
+  });
+});
+```
+</script>
+</section>
+
+<section data-markdown t>
+<script type="text/template">
+## *That's. It.*
+</script>
+</section>
+</section>
+
+<section>
+<section data-markdown t>
+<script type="text/template">
+## More real world
+#### (less road rules?)
+
+```sh
+App
+  - js
+    - model
+      - person.js
+    - view
+      - person.js
+    - backbone.js
+    - jquery.js
+    - myapp.js
+    - require.js
+  - index.html
+```
+</script>
+</section>
+
+<section data-markdown t>
+<script type="text/template">
+## More real world
+
+```html
+<script src="js/require.js" data-main="js/myapp">
+<᠎/script>
+```
+
+</script>
+</section>
+
+<section data-markdown t>
+<script type="text/template">
+```javascript
+require.config({baseUrl:'js'});
+
+// myapp.js
+require(['model/person', 'view/person'],
+function (PModel, PView) {
+  var App = new PView({
+    model: new PModel({a:1})
+  });
+  App.render();
+});
+```
+</script>
+<aside class="notes">
+We switched to using a require statement instead of define.
+
+This usually happens in your _base_ file and no where else.
+
+This means we don't need to return anything at the very end.
+</aside>
+</section>
+
+<section data-markdown t>
+<script type="text/template">
+## What's happening there?
+</script>
+</section>
+
+<section data-markdown t>
+<script type="text/template">
+```javascript
+define('model/person', ['backbone'],
+function (Backbone) {
+  // Return the class
+  return Backbone.Model.extend({
+    ...
+  });
+});
+```
+</script>
+</section>
+
+<section data-markdown t>
+<script type="text/template">
+```javascript
+define('view/person', ['backbone', 'jquery'],
+function (Backbone, $) {
+  // Return the class
+  return Backbone.View.extend({
+    render: function () {
+      // Inject the rendered template
+      this.$el.html(
+        this.template(
+          this.model.toJSON()
+        )
+      );
+    }
+  });
+});
+```
+</script>
+</section>
+
+<section data-markdown t>
+<script type="text/template">
+## What about *Backbone?*
+
+```javascript
+require.config({
+  baseUrl: 'js',
+  shim : {
+    'backbone': {
+      exports: 'Backbone',
+      deps: ['jquery']
+    }
+  }
+});
+```
+</script>
+</section>
+</section>
+
+<section>
+<section data-markdown t>
+<script type="text/template">
+# Config is *so* exciting.
+</script>
+</section>
+
+<section data-markdown t>
+<script type="text/template">
+## map
+
+```javascript
+require.config({
+  map: {
+    "simple": "something/really/deep",
+    "relative": "../below"
+  }
+});
+```
+</script>
+</section>
+
+<section data-markdown t>
+<script type="text/template">
+## map
+
+```javascript
+require(['simple', 'relative'],
+function (simple, relative) {
+  ...
+});
+```
+</script>
+</section>
+
+<section data-markdown t>
+<script type="text/template">
+## ALEX LOOK UP THE THING WHERE
+## YOU CAN MAP DIFF VERSIONS TO
+## DIFF MODULES
+</script>
+</section>
+
+</section>
+
+<section>
+<section data-markdown t>
+<script type="text/template">
+# *BUILDS*
+</script>
+</section>
+
+<section data-markdown t>
+<script type="text/template">
+## *doesn't scale*
+
+```sh
+cat jquery.js backbone.js app.js ... > built.js
+uglify built.js > built.min.js
+```
+</script>
+</section>
+
+<section data-markdown t>
+<script type="text/template">
+## Instead...
+
+```javascript
+// app.build.js
+{
+  appDir: 'App/js',
+  baseUrl: '.',
+  dir: 'build',
+  optimize: 'uglify',
+  modules: [{
+    name: "myapp"
+  }]
+}
+```
+</script>
+</section>
+
+<section data-markdown t>
+<script type="text/template">
+## Then...
+
+```sh
+r.js app.build.js
+// you now have a build/myapp.js
+// minified and ready to roll.
+```
+</script>
+</section>
+
+<section data-markdown t>
+<script type="text/template">
+## To run the *build*
+## instead of *dev mode*
+
+```js
+require.config({
+  baseUrl: 'build/js'
+});
+```
+</script>
+</section>
+
+</section>
+
+<section>
+<section data-markdown t>
+<script type="text/template">
+# *Quick* Recap
+</script>
+</section>
+
+
+<section data-markdown t>
+<script type="text/template">
+## *AMD* Modules describe
+## *their own* dependencies
+</script>
+</section>
+
+<section data-markdown t>
+<script type="text/template">
+## They have *great*
+## compat with *globals*,
+## and legacy code
+</script>
+</section>
+
+<section data-markdown t>
+<script type="text/template">
+## AMD Modules are
+# small and *concise*
+</script>
+</section>
+
+<section data-markdown t>
+<script type="text/template">
+## They dictate a
+## *clean*
+## file structure
+</script>
+</section>
+
+<section data-markdown t>
+<script type="text/template">
+## Builds are *free*
+</script>
+</section>
+</section>
+
+<section>
+<section data-markdown t>
+<script type="text/template">
+## I'm sold, what about *plugins*?
+
+```javascript
+// Maybe just wrap them?
+define('jquery/plugin', ['jquery'],
+function ($) {
+  var jQuery = $;
+  // ... paste plugin here ...
+  return $;
+});
+```
+</script>
+</section>
+
+<section data-markdown t>
+<script type="text/template">
+## I'm sold, what about *plugins*?
+
+```javascript
+// a shim works fine
+{
+  shim: {
+    name: 'jquery/plugin',
+    exports: ['jQuery']
+}
+```
+</script>
+</section>
+
+<section data-markdown t>
+<script type="text/template">
+## I'm sold, what about *plugins*?
+
+```javascript
+// Maybe a plugin isn't the answer
+// and we're stretching the bounds
+// of a well-structured application
+// by trying to make everyting a
+// plugin.
+... your view code here ... ;)
+```
+</script>
+</section>
+
+<section data-markdown t>
+<script type="text/template">
+## A *Plugin Plugin*?
+
+```javascript
+require(['jquery', '$fn!jquery/plugin'],
+function ($) {
+  // Usually the plugins just return $
+  // so you can just ignore them in the
+  // arguments list here
+  $('div').plugin();
+});
+```
+</script>
+</section>
+</section>
+
+<section>
+<section data-markdown t>
+<script type="text/template">
+# *AMD Plugins*
+#### (are the best)
+</script>
+</section>
+
+<section data-markdown t>
+<script type="text/template">
+# What do *plugins* do?
+</script>
+</section>
+
+<section data-markdown t>
+<script type="text/template">
+## **Imagine** you were a
+# *Messenger*
+</script>
+</section>
+
+<section data-markdown t class="computerguy">
+<script type="text/template">
+## And I *said*:
+
+> Go forth see if **Paul Irish** has any info for me?
+</script>
+</section>
+
+<section data-markdown t>
+<script type="text/template">
+## And you rode your *noble steed* to Paul's house to ask his *fiancé*
+# and *she* answered:
+
+> Paul says to tell Alex that Paul **really hates sandwhiches** and wants to give him this $5 bill (~4.98 CAD).
+</script>
+</section>
+
+<section data-markdown t>
+<script type="text/template">
+## And then you rode *back* to me and said:
+
+> Paul said that he 'loves mayonnaise' and told me to give you this $1 bill.
+</script>
+</section>
+
+<section data-markdown t>
+<script type="text/template">
+# *You* are a plugin!
+</script>
+</section>
+
+<section data-markdown t>
+<script type="text/template">
+## A plugin is *middleware*
+</script>
+</section>
+
+<section data-markdown t>
+<script type="text/template">
+## A plugin is a *mediator*
+</script>
+</section>
+
+<section data-markdown t>
+<script type="text/template">
+## A plugin is a *lone wolf*
+</script>
+</section>
+
+</section>
+
+<section>
+<section data-markdown t>
+<script type="text/template">
+# Plugin *Examples*
+</script>
+</section>
+
+<section data-markdown t>
+<script type="text/template">
+## *Text* as a dependency!
+
+```javascript
+require(['text!paulsdiary.txt'], function (diary){
+  console.log(diary);
+});
+```
+</script>
+</section>
+
+<section data-markdown t>
+<script type="text/template">
+## What's happening here?
+
+```javascript
+// We have a file with a plugin ! in front
+'text!paulsdiary.txt'
+
+// The plugin is just another JS file!
+text.js
+
+// And in that file, it let's you get creative.
+// It'll give you the original input, and let you
+// respond with whatever you want.
+function load(name, options) {
+  // Since it's text!
+  $.get('/' + name, function (text){
+    require.load(text);
+  })
+}
+```
+</script>
+</section>
+
+<section data-markdown t>
+<script type="text/template">
+## The *text!* plugin just *reads*
+## the name you send it.
+## *AJAXes* that
+## in as a string.
+## Then *returns* the string to you.
+
+</script>
+</section>
+
+<section data-markdown t>
+<script type="text/template">
+## (which is *different* than when it loads a script for you)
+</script>
+</section>
+
+<section data-markdown t>
+<script type="text/template">
+# How about some *templates*?
+</script>
+</section>
+
+<section data-markdown t>
+<script type="text/template">
+## *text!* works for that!
+
+```javascript
+require(['hbs', 'text!tmpl'], function(Hbs, tmpl){
+  var tmplFn = Hbs.compile(tmpl);
+  document.body.innerHTML = tmplFn({...});
+});
+```
+
+</script>
+</section>
+
+<section data-markdown t>
+<script type="text/template">
+## Or *opt-out* of boilerplate
+
+```javascript
+// Usea new tmpl! plugin
+require(['tmpl!myTemplate'], function (myTmpl) {
+  // Now it's already a function!
+  document.body.innerHTML = myTmpl({...});
+});
+```
+</script>
+</section>
+
+<section data-markdown t>
+<script type="text/template">
+## Pretty *simple!*
+
+```javascript
+function load (name, options) {
+  // Ajax into the template dir
+  $.get('/tmpl/' + name, function (tmpl) {
+    // Compile it here instead
+    var tmplFn = Hbs.compile(tmpl);
+    // Just return the function
+    require.load(tmplFn);
+  });
+}
+```
+</script>
+
+<aside class="notes">
+This is overly simplified, we can actually precompile our
+templates this way and avoid the *terrible* world of
+in DOM templates.
+</aside>
+</section>
+
+<section data-markdown t>
+<script type="text/template">
+## The plugin *"messenger"* takes
+## the info that you gave it.
+## And does something different.
+#### (and hopefully doesn't steal your money)
+</script>
+</section>
+
+
+</section>
 <!-------END NORMAL SLIDES ----------->
 
     <section>
