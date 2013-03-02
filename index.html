@@ -116,6 +116,9 @@ section[t] blockquote {
   font-style: normal;
   text-shadow: 1px 1px 0 #FFFFFF, 3px 3px 0 #000000;
 }
+.reveal iframe {
+  max-height: none;
+}
 </style>
 </head>
 
@@ -135,7 +138,11 @@ section[t] blockquote {
     </section>
 
 <!-------START NORMAL SLIDES ----------->
+<section>
+  <iframe style="width:1024px;height:1024px;margin-top:-250px;" src="/lib/txjs.html"></iframe>
+</section>
 
+<section>
 <section data-markdown t>
 <script type="text/template">
 # Parsing
@@ -160,6 +167,7 @@ Depending __on__ jQuery
 
 ¯\\\_(ツ)\_/¯
 </script>
+</section>
 </section>
 
 <section class="computerguy">
@@ -267,7 +275,7 @@ Depending __on__ jQuery
 
 <section class="computerguy" data-markdown t>
 <script type="text/template">
-# : /
+# ಠ_ಠ
 </script>
 </section>
 
@@ -302,7 +310,7 @@ Depending __on__ jQuery
   <section data-markdown t>
   <script type="text/template">
   ## You are sacrificing *mental*
-  ## and *network* performance by
+  ## & *network* performance by
   ## building apps the
   ## "good 'ol way"
   </script>
@@ -527,6 +535,21 @@ define('myapp', ['jquery'], function ($) {
 
 <section data-markdown t>
 <script type="text/template">
+# We can make it *Anonymous*
+## And it just uses file name
+
+```javascript
+define(['jquery'], function ($) {
+  $(document).ready(function(){
+    alert('yay');
+  });
+});
+```
+</script>
+</section>
+
+<section data-markdown t>
+<script type="text/template">
 ## *That's. It.*
 </script>
 </section>
@@ -687,9 +710,21 @@ function (simple, relative) {
 
 <section data-markdown t>
 <script type="text/template">
-## ALEX LOOK UP THE THING WHERE
-## YOU CAN MAP DIFF VERSIONS TO
-## DIFF MODULES
+## Same Dependency
+# *Different Versions*
+
+```javascript
+requirejs.config({
+    map: {
+        '*': {
+            'foo': 'foo1.2'
+        },
+        'some/oldmodule': {
+            'foo': 'foo1.0'
+        }
+    }
+});
+```
 </script>
 </section>
 
@@ -1060,12 +1095,77 @@ in DOM templates.
 
 <section data-markdown t>
 <script type="text/template">
-## The plugin *"messenger"* takes
-## the info that you gave it.
-## And does something different.
+## The plugin *"messenger"*
+## takes the info
+## that you gave it.
+## And does something *different.*
 #### (and hopefully doesn't steal your money)
 </script>
 </section>
+</section>
+
+<section>
+<section data-markdown t>
+<script type="text/template">
+## But seriously
+# What's *jQuery* got to do with it?
+</script>
+</section>
+
+<section data-markdown t>
+<script type="text/template">
+## jQuery is just a *normal* dependency
+</script>
+</section>
+
+<section data-markdown t>
+<script type="text/template">
+## Modularizing your
+## app with *modules*
+## beats the hell out of modularizing it
+## with *jQuery Plugins*
+</script>
+</section>
+
+<section data-markdown t>
+<script type="text/template">
+## Any *proper* module
+## system will help you
+## maintain better app
+## structure
+</script>
+
+<aside class="notes">
+Along with other libraries like Backbone that
+are _actually_ for structuring your app.
+</aside>
+</section>
+
+<section data-markdown t>
+<script type="text/template">
+> "jQuery is a tool" -- Alex Sexton
+
+-- Adam J Sontag
+</script>
+</section>
+
+<section data-markdown t>
+<script type="text/template">
+## So *next time* you
+## start an app.
+## Download *require.js* first :D
+</script>
+</section>
+
+<section data-markdown t>
+<script type="text/template">
+## And when you need
+## *AJAX* or *DOM Access*
+# **Then** pull in jQuery
+# as a dependency.
+</script>
+</section>
+
 
 
 </section>
